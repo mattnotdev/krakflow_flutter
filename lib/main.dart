@@ -6,10 +6,30 @@ void main() {
 
 class MyApp extends StatelessWidget {
   List<Task> tasks = [
-    Task(title: "odrobić zadanie na metodologie", deadline: "dzisiaj"),
-    Task(title: "wyrobić certyfikat Cisco", deadline: "koniec semestru"),
-    Task(title: "napisać stronę w html", deadline: "następny tydzień"),
-    Task(title: "napisać program w C na systemy", deadline: "następny tydzień"),
+    Task(
+      title: "odrobić zadanie na metodologie",
+      deadline: "dzisiaj",
+      done:false,
+      priority: "wysokie"
+    ),
+    Task(
+      title: "wyrobić certyfikat Cisco",
+      deadline: "koniec semestru",
+      done: false,
+      priority: "średnie",
+    ),
+    Task(
+      title: "napisać stronę w html",
+      deadline: "następny tydzień",
+      done: false,
+      priority: "niskie",
+    ),
+    Task(
+      title: "napisać program w C na systemy",
+      deadline: "następny tydzień",
+      done: true,
+      priority: "niskie",
+    ),
   ];
 
   @override
@@ -20,12 +40,21 @@ class MyApp extends StatelessWidget {
         body: Center(
           child: Column(
             children: [
-              Text(
-                "Dzisiejsze zadania",
-                style: TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                )
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("Masz dzisiaj ${tasks.length} zadania do zrobienia"),
+                ],
+              ),
+              Padding(
+                padding: EdgeInsets.all(20),
+                child: Text(
+                  "Dzisiejsze zadania",
+                  style: TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                  )
+                ),
               ),
               Expanded(
                 child: ListView.builder(
@@ -33,8 +62,8 @@ class MyApp extends StatelessWidget {
                   itemBuilder: (context, index) {
                     return TaskCard(
                       title: tasks[index].title,
-                      subtitle: "termin: ${tasks[index].deadline}",
-                      icon: Icons.label,
+                      subtitle: "termin: ${tasks[index].deadline} | priorytet: ${tasks[index].priority}",
+                      icon: tasks[index].done ? Icons.check_circle : Icons.radio_button_checked,
                     );
                   },
                 )
@@ -50,8 +79,15 @@ class MyApp extends StatelessWidget {
 class Task {
   final String title;
   final String deadline;
+  final bool done;
+  final String priority;
 
-  Task({required this.title, required this.deadline});
+  Task({
+    required this.title,
+    required this.deadline,
+    required this.done,
+    required this.priority,
+  });
 }
 
 class TaskCard extends StatelessWidget {
@@ -68,12 +104,15 @@ class TaskCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: ListTile(
-        leading: Icon(icon),
-        title: Text(title),
-        subtitle: Text(subtitle),
-      ),
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical:6, horizontal:20),
+      child: Card(
+        child: ListTile(
+          leading: Icon(icon),
+          title: Text(title),
+          subtitle: Text(subtitle),
+        ),
+      )
     );
   }
 }
